@@ -126,4 +126,204 @@ def game_hash
   }
 end
 
-# Write code here
+def num_points_scored(name)
+  hash = game_hash
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          return player[:points] if player[:player_name] == name
+        end
+      end
+    end
+  end
+end
+
+def shoe_size(name)
+  hash = game_hash
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          return player[:shoe] if player[:player_name] == name
+        end
+      end
+    end
+  end
+end
+
+def team_colors(team_name)
+  hash = game_hash
+  hash.each do |loc, team|
+    if team[:team_name] == team_name
+      return team[:colors]
+    end
+  end
+end
+
+def team_names
+  hash = game_hash
+  arr = []
+  hash.each { |loc, team| arr << team[:team_name] }
+  arr
+end
+
+def player_numbers(team_name)
+  hash = game_hash
+  arr = []
+  hash.each do |loc, team|
+    if team[:team_name] == team_name
+      team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          arr << player[:number]
+        end
+      end
+    end
+    end
+  end
+  arr
+end
+
+def player_stats(name)
+  hash = game_hash
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          return player if player[:player_name] == name
+        end
+      end
+    end
+  end
+end
+
+def biggest_shoe_size
+  hash = game_hash
+  max = 0
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          max = player[:shoe] if player[:shoe] > max
+        end
+      end
+    end
+  end
+  return max
+end
+
+def big_shoe_rebounds
+  hash = game_hash
+  size = biggest_shoe_size
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          return player[:rebounds] if player[:shoe] == size
+        end
+      end
+    end
+  end
+end
+
+def most_points_scored
+  hash = game_hash
+  max = 0
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          max = player[:points] if player[:points] > max
+        end
+      end
+    end
+  end
+  return max
+end
+
+def total_points(team_name)
+  hash = game_hash
+  total = 0
+  hash.each do |loc, team|
+    if team[:team_name] == team_name
+      team.each do |k, v|
+        if k == :players
+          v.each do |player|
+            total += player[:points]
+          end
+        end
+      end
+    end
+  end
+  total
+end
+
+def winning_team
+  hash = game_hash
+  home = total_points(hash[:home][:team_name])
+  away = total_points(hash[:away][:team_name])
+  return home > away ? hash[:home][:team_name] : hash[:away][:team_name]
+end
+
+def longest_name_count
+  hash = game_hash
+  max = 0
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          max = player[:player_name].length if player[:player_name].length > max
+        end
+      end
+    end
+  end
+  max
+end
+
+def most_steals
+  hash = game_hash
+  max = 0
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          max = player[:steals] if player[:steals] > max
+        end
+      end
+    end
+  end
+  return max
+end
+
+def player_with_longest_name
+  hash = game_hash
+  count = longest_name_count
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          return player[:player_name] if player[:player_name].length == count
+        end
+      end
+    end
+  end
+end
+
+def long_name_steals_a_ton
+  hash = game_hash
+  name = player_with_longest_name
+  steals = most_steals
+  hash.each do |loc, team|
+    team.each do |k, v|
+      if k == :players
+        v.each do |player|
+          return true if player[:player_name] == name && player[:steals] == steals
+        end
+      end
+    end
+  end
+  return false
+end
+
+puts long_name_steals_a_ton
