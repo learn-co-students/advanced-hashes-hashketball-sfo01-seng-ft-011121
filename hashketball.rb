@@ -126,4 +126,78 @@ def game_hash
   }
 end
 
-# Write code here
+def num_points_scored(player)
+  num_points = 0
+  game_hash.each do |ha, team|
+    team[:players].each_with_index do |plyr, i|
+      if plyr.has_value?(player)
+        num_points = team[:players][i][:points]
+      end
+    end
+  end
+  return num_points
+end
+
+def shoe_size(player)
+  game_hash.each do |ha, team|
+    team[:players].each_with_index do |plyr, i|
+      if plyr.has_value?(player)
+        return team[:players][i][:shoe]
+      end
+    end
+  end
+end
+
+def team_colors(team)
+  game_hash.each do |k, t|
+    if t.has_value?(team)
+      return t[:colors]
+    end
+  end
+end
+
+def team_names
+  teams = []
+  game_hash.each do |ha, team|
+    teams << game_hash[ha][:team_name]
+  end
+  return teams
+end
+
+def player_numbers(team)
+  numbers = []
+  game_hash.each do |ha, t|
+    if t.has_value?(team)
+    t[:players].each_with_index do |plyr, i|
+        numbers << t[:players][i][:number]
+      end
+    end
+  end
+  return numbers
+end
+
+def player_stats(player)
+  player_hash = {}
+  game_hash.each do |ha, team|
+    team[:players].each_with_index do |plyr, i|
+      if plyr.has_value?(player)
+        player_hash = team[:players][i]
+      end
+    end
+  end
+  return player_hash
+end
+
+def big_shoe_rebounds
+  biggest = 0
+  rebounds = 0
+  game_hash.each do |ha, t|
+    t[:players].each_with_index do |player, i|
+      if player[:shoe] > biggest
+        biggest = player[:shoe]
+        rebounds = player[:rebounds]
+      end
+    end
+  end
+  return rebounds
+end
